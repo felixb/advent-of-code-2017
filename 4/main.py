@@ -3,22 +3,39 @@
 import sys
 
 
-def is_valid_passphrase(p):
+def is_valid_passphrase_1(p):
     words = p.split(" ")
     return len(words) == len(set(words))
 
 
-def run_1(input):
+def is_valid_passphrase_2(p):
+    all_words = p.split(" ")
+    sorted_words = ["".join(sorted(list(w))) for w in all_words]
+    return len(sorted_words) == len(set(sorted_words))
+
+
+def is_valid_passphrase(p, variant):
+    if variant == 1:
+        return is_valid_passphrase_1(p)
+    else:
+        return is_valid_passphrase_2(p)
+
+
+def validate_passpfharses(input, variant):
     passphrases = input.split("\n")
     valid_passphrases = 0
     for p in passphrases:
-        if is_valid_passphrase(p):
+        if is_valid_passphrase(p, variant):
             valid_passphrases += 1
     return valid_passphrases
 
 
+def run_1(input):
+    return validate_passpfharses(input, 1)
+
+
 def run_2(input):
-    return None
+    return validate_passpfharses(input, 2)
 
 
 if __name__ == '__main__':
