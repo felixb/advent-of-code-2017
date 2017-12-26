@@ -36,8 +36,43 @@ def run_1(input):
     return distance_to_zero(pos)
 
 
+def positions_around(pos):
+    return [
+        step(pos, [1, 0], 1),
+        step(pos, [1, 1], 1),
+        step(pos, [1, -1], 1),
+        step(pos, [-1, 0], 1),
+        step(pos, [-1, 1], 1),
+        step(pos, [-1, -1], 1),
+        step(pos, [0, 1], 1),
+        step(pos, [0, -1], 1),
+    ]
+
+
+def pos_to_key(pos):
+    return "%d:%d" % (pos[0], pos[1])
+
+
 def run_2(input):
-    return None
+    target = int(input)
+    pos = [0, 0]
+    values = {pos_to_key(pos): 1}
+    step_length = 1
+    step_count = 0
+    while True:
+        direction = DIRECTIONS[step_count % 4]
+        for i in range(0, step_length):
+            pos = step(pos, direction, 1)
+            value = 0
+            for neighbor in positions_around(pos):
+                key = pos_to_key(neighbor)
+                if key in values:
+                    value += values[key]
+            values[pos_to_key(pos)] = value
+            if value > target:
+                return value
+        step_length += step_count % 2
+        step_count += 1
 
 
 if __name__ == '__main__':
