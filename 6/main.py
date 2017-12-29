@@ -4,7 +4,7 @@ import re
 import sys
 
 
-def run_1(input):
+def run_var(input, variant):
     banks = [int(i) for i in re.compile("\s+").split(input)]
     num_banks = len(banks)
     configurations = []
@@ -20,11 +20,22 @@ def run_1(input):
         banks[peak_index] = 0
         for i in range(0, num_blocks):
             banks[(peak_index + i + 1) % num_banks] += 1
-    return len(configurations)
+    if variant == 1:
+        return len(configurations)
+    else:
+        num_configurations = len(configurations)
+        for i in range(0, num_configurations):
+            if configurations[i] == banks:
+                return num_configurations - i
+        return None
+
+
+def run_1(input):
+    return run_var(input, 1)
 
 
 def run_2(input):
-    return None
+    return run_var(input, 2)
 
 
 if __name__ == '__main__':
